@@ -6,8 +6,9 @@ use warnings;
 use Carp qw(carp croak);
 
 use base 'WWW::Box::API::Collection';
+use WWW::Box::API::Collections::UserAliases;
 
-sub init {
+sub _init {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
     my $self = shift;
 
     $self->{'collection'}      = 'users';
@@ -19,8 +20,17 @@ sub init {
 
 sub memberships {
     my ($self, $user_id) = @_;
+    return WWW::Box::API::Collections::GroupMemberships->new(
+        $self->{'client'},
+        'path' => $self->{'collection'},
+        'id'   => $user_id
+    );
+}
 
-    return $self->SUPER::get_subresource($user_id, 'memberships');
+sub aliases {
+    my ($self, $user_id) = @_;
+    return WWW::Box::API::Collections::UserAliases->new($self->{'client'},
+        'path' => $self->{'collection'} . q{/} . $user_id);
 }
 
 1;

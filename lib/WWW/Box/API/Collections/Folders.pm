@@ -7,7 +7,7 @@ use Carp qw(carp croak);
 
 use base 'WWW::Box::API::Collection';
 
-sub init {
+sub _init {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
     my $self = shift;
 
     $self->{'collection'} = 'folders';
@@ -30,6 +30,15 @@ sub add {
     );
 
     return $self->SUPER::add(%req);
+}
+
+sub collaborations {
+    my ($self, $folder_id) = @_;
+    return WWW::Box::API::Collections::Collaborations->new(
+        $self->{'client'},
+        'path' => $self->{'collection'},
+        'id'   => $folder_id
+    );
 }
 
 1;

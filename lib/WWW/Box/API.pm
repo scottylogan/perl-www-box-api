@@ -17,20 +17,20 @@ use Module::Find;
 
 use version; our $VERSION = qv('0.1.0');
 
-useall Box::Collections;
+useall WWW::Box::API::Collections;
 
-our $APIURL       = 'https://api.box.com/2.0/';
-our $DEBUG        = 1;
-our $MAXLIMIT     = 1000;
+our $APIURL   = 'https://api.box.com/2.0/';
+our $DEBUG    = 1;
+our $MAXLIMIT = 1000;
 
 sub new {
     my ($class, %opts) = @_;
     my $self = bless {}, $class;
-    $self->init(%opts);
+    $self->_init(%opts);
     return $self;
 }
 
-sub init {
+sub _init {
     my ($self, %opts) = @_;
 
     croak('Missing client_id')
@@ -46,15 +46,22 @@ sub init {
         'client_id'        => $opts{'client_id'},
         'client_secret'    => $opts{'client_secret'},
         'redirect_uri'     => $opts{'redirect_uri'},
-        'service_provider' => 'Box::OAuth2',
+        'service_provider' => 'WWW::Box::API::OAuth2',
     );
 
     if (defined($opts{'token_file'})) {
-        $self->{'token_file'}       = $opts{'token_file'};
-        $oauth_opts{'token_string'} = $self->load_token();
-        $oauth_opts{'save_tokens'}  = sub {
+        $self->{'token_file'} = $opts{'token_file'};
+        if (-f $self->{'token_file'}) {
+            $oauth_opts{'token_string'} = $self->_load_token();
+        } else {
+            open my $tf, '>', $self->{'token_file'}
+              or croak('Failed to create token file: ' . $!);
+            close $tf
+              or croak('Failed to close token file: ' . $!);
+        }
+        $oauth_opts{'save_tokens'} = sub {
             my $token_string = shift;
-            $self->save_token($token_string);
+            $self->_save_token($token_string);
         };
     }
 
@@ -77,7 +84,7 @@ sub init {
 
 ## OAuth 2.0
 
-sub save_token {
+sub _save_token {
     my ($self, $token_string) = @_;
     my $status = 0;    # assume failure
 
@@ -97,7 +104,7 @@ sub save_token {
     return $status;
 }
 
-sub load_token {
+sub _load_token {
     my $self = shift;
 
     my $token_string = 0;
@@ -162,7 +169,7 @@ sub as_user {
     return;
 }
 
-sub set_headers {
+sub _set_headers {
     my ($self, %headers) = @_;
     if (%headers) {
         $self->{'headers'} = \%headers;
@@ -182,7 +189,7 @@ sub set_headers {
     return;
 }
 
-sub handle_response {
+sub _handle_response {
     my ($self, $uri, $response) = @_;
 
     $self->{'last_status'}  = $response->code;
@@ -201,41 +208,50 @@ sub handle_response {
 sub get {
     my ($self, $uri) = @_;
 
-    $self->set_headers();
+    $self->_set_headers();
     my $res = $self->{'client'}->get($uri, %{ $self->{'headers'} });
 
-    return $self->handle_response($uri, $res);
+    return $self->_handle_response($uri, $res);
 }
 
 sub post {
     my ($self, $uri, $json, %headers) = @_;
 
+    %headers = () unless %headers;
+
     $headers{'Content'} = $json;
 
-    $self->set_headers(%headers);
+    $self->_set_headers(%headers);
 
     my $res = $self->{'client'}->post($uri, %{ $self->{'headers'} });
 
-    return $self->handle_response($uri, $res);
+    return $self->_handle_response($uri, $res);
 
 }
 
 sub delete {    ## no critic (Subroutines::ProhibitBuiltinHomonyms)
     my ($self, $uri, %headers) = @_;
 
-    $self->set_headers();
+    %headers = () unless %headers;
+
+    $self->_set_headers(%headers);
 
     my $res = $self->{'client'}->delete($uri, %{ $self->{'headers'} });
-    return $self->handle_response($uri, $res);
+    return $self->_handle_response($uri, $res);
 }
 
 sub put {
-    my ($self, $uri, %headers) = @_;
+    my ($self, $uri, $json, %headers) = @_;
 
-    $self->set_headers(%headers);
+    %headers = () unless %headers;
+
+    $headers{'Content'} = $json;
+
+    $self->_set_headers(%headers);
 
     my $res = $self->{'client'}->put($uri, %{ $self->{'headers'} });
-    return $self->handle_response($uri, $res);
+
+    return $self->_handle_response($uri, $res);
 }
 
 sub status {
@@ -258,22 +274,32 @@ sub succeeded {
 
 sub users {
     my $self = shift;
-    return Box::Collections::Users->new($self);
+    return WWW::Box::API::Collections::Users->new($self);
 }
 
 sub groups {
     my $self = shift;
-    return Box::Collections::Groups->new($self);
+    return WWW::Box::API::Collections::Groups->new($self);
 }
 
 sub folders {
     my $self = shift;
-    return Box::Collections::Folders->new($self);
+    return WWW::Box::API::Collections::Folders->new($self);
 }
 
 sub group_memberships {
     my $self = shift;
-    return Box::Collections::GroupMemberships->new($self);
+    return WWW::Box::API::Collections::GroupMemberships->new($self);
+}
+
+sub user_aliases {
+    my $self = shift;
+    return WWW::Box::API::Collections::UserAliases->new($self);
+}
+
+sub collaborations {
+    my $self = shift;
+    return WWW::Box::API::Collections::Collaborations->new($self);
 }
 
 1;

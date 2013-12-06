@@ -10,13 +10,17 @@ use LWP;
 use JSON;
 
 sub new {
-    my ($class, $client) = @_;
-    my $self = bless { 'client' => $client }, $class;
-    $self->init();
+    my ($class, $client, %opts) = @_;
+    my $self = { 'client' => $client };
+    foreach my $k (keys %opts) {
+        $self->{$k} = $opts{$k};
+    }
+    bless $self, $class;
+    $self->_init(%opts);
     return $self;
 }
 
-sub init {
+sub _init {
     croak('WWW::Box::API::Collection::init should never be called');
 }
 
@@ -78,7 +82,7 @@ sub all {
 
         my %res = %{ decode_json($response->content) };
 
-        if (!$res{'total_count'}) {
+        if (!defined($res{'total_count'})) {
             carp("Box: invalid response: no total_count property\n");
             last;
         }
@@ -128,10 +132,10 @@ sub as_user {
 sub get {
     my ($self, $id, %opts) = @_;
 
-    return $self->get_subresource($id, q{}, %opts);
+    return $self->_get_subresource($id, q{}, %opts);
 }
 
-sub get_subresource {
+sub _get_subresource {
     my ($self, $id, $path, %opts) = @_;
 
     my $json;
@@ -186,9 +190,10 @@ sub add {
 }
 
 sub remove {
-    my ($self, $id) = @_;
+    my ($self, $id, %params) = @_;
 
     my $uri = $self->{'client'}->new_uri($self->{'collection'}, $id);
+    $uri->query_form(%params);
     my $response = $self->{'client'}->delete($uri);
 
     return $response->is_success;
