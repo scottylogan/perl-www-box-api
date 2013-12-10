@@ -3,7 +3,7 @@ package WWW::Box::API::OAuth2::WebServer;
 use strict;
 use warnings;
 
-use base qw(Box::OAuth2);
+use base qw(WWW::Box::API::OAuth2);
 
 sub required_init {
     return qw(client_id client_secret);

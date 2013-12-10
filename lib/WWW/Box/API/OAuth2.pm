@@ -28,7 +28,7 @@ my %flow_class = (
 sub flow_class {
     my ($class, $flow) = @_;
     if (exists $flow_class{$flow}) {
-        return "Box::OAuth2::$flow_class{$flow}";
+        return "WWW::Box::API::OAuth2::$flow_class{$flow}";
     } else {
         my $allowed = join ', ', sort keys %flow_class;
         Carp::croak("Flow '$flow' not in: $allowed");
