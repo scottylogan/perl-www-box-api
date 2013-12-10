@@ -3,3 +3,5 @@ Makefile
 MANIFEST.bak
 itlab-env
 itlab-stanford.json
+blib/
+pm_to_blib
