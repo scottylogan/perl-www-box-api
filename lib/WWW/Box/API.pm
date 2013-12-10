@@ -325,41 +325,103 @@ administrative calls to an enterprise instance.
 
 =head1 SUBROUTINES/METHODS
 
-=over
 
-=item new( %params )
+=head2 my $box = new WWW::Box::API(%params)
 
-Returns a new instance of this class.
+Returns a new instance of this class.  %params must include client_id,
+client_secret and the redirect_uri associated with the client_id.  %params
+should also include token_file to specify where to store the OAuth 2.0 tokens.
 
-=back
+=head2 $box-E<gt>users
 
-=head1 NAMESPACE METHODS
+Return an object to access the Users collection (See L<WWW::Box::API::Users>).
 
-=over
+=head2 $box-E<gt>groups
 
-=item users
+Return an object to access the Groups collection (See
+L<WWW::Box::API::Groups>).
 
-Users namespace of the API (See L<WWW::Box::API::Users>).
+=head2 $box-E<gt>folders
 
-=item groups
+Return an object to access the Folders collection (See
+L<WWW::Box::API::Folders>).
 
-Groups namespace of the API (See L<WWW::Box::API::Groups>).
+=head2 $box-E<gt>group_memberships
 
-=item folders
+Return an object to access the GroupMemberships collection (See
+L<WWW::Box::API::GroupMemberships>).
 
-Folders namespace of the API (See L<WWW::Box::API::Folders>).
+=head2 $box-E<gt>user_aliases
 
-=item grouo_memberships
+Return an object to access the UserAliases collection (See
+L<WWW::Box::API::UserAliases>).
 
-GroupMemberships namespace of the API (See L<WWW::Box::API::GroupMemberships>).
+=head2 $box-E<gt>collaborations
 
-=head1 PUBLIC METHODS
+Return an object to access the Collaborations collection (See
+L<WWW::Box::API::Collaborations>).
 
-=over
+=head2 $box-E<gt>access_token
 
-=item as_user
+Returns the current OAuth 2.0 access token.
 
-blah blah
+=head2 $box-E<gt>authorization_url
+
+Returns an authorization URL to approve tokens for this client.
+
+=head2 $box-E<gt>request_tokens($code)
+
+Requests new tokens using the code acquired from the authorization step.
+
+=head2 $box-E<gt>should_refresh
+
+Checks if the tokens should be refreshed - returns true if a refresh is required.
+
+=head2 $box-E<gt>can_refresh_tokens
+
+Returns true if the tokens can be refreshed, and false if a new authorization is required.
+
+=head2 $box-E<gt>new_uri($collection, $id)
+
+If id is not specified, returns the URI for the named collection.  If
+id is specified, returns the URI for that specific resource in the
+collection.
+
+=head2 $box-E<gt>as_user($user_id)
+
+If user_id is non-zero, all future requests will include the 'As-User:
+$user_id' header to act on behalf of that user.  Setting user_id to 0 will
+revert back to acting as the admin user.
+
+=head2 $box-E<gt>get($uri)
+
+Get the specificied $uri.  Returns the resource representation as a hash.
+
+=head2 $box-E<gt>post($uri, $json, %headers)
+
+Post the $json representation of a resource to $uri.  Returns the new resource
+representation as a hash.
+
+=head2 $box-E<gt>delete($uri, %headers)
+
+Delete the resource identified by $uri.
+
+=head2 $box-E<gt>put($uri, $json, %headers)
+
+Updates the resource identified by $uri with the (possibly partial)
+representation in $json.
+
+=head2 $box-E<gt>status
+
+Returns the last status received from the Box API.
+
+=head2 $box-E<gt>content
+
+Returns the last content received from the Box API.
+
+=head2 $box-E<gt>succeeded
+
+Returns true if the last Box API request was successful.
 
 =head1 INCOMPATIBILITIES
 
@@ -370,7 +432,7 @@ None.
 No bugs have been reported.
 
 Please report any bugs or feature requests to
-C<bug-www-box-api@rt.cpan.org>, or through the web interface at
+bug-www-box-api@rt.cpan.org, or through the web interface at
 L<http://rt.cpan.org>.
 
 =head1 SOURCE REPOSITORY
@@ -383,7 +445,7 @@ No tests yet
 
 =head1 AUTHOR
 
-Scotty Logan C<< <swl@stanford.edu> >>
+Scotty Logan <swl@stanford.edu>
 
 =head1 LICENSE AND COPYRIGHT
 
