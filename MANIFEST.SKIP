@@ -23,3 +23,7 @@
 
 # Avoid git files
 \.git
+\.gitignore
+
+# Avoid examples directory
+\bexamples/
