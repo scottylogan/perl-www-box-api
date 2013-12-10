@@ -13,7 +13,9 @@ WriteMakefile(
         'URI::QueryParam'      => 0,
         'Module::Find'         => 0,
         'JSON'                 => 0,
+        'LWP'                  => 0,
         'LWP::Authen::OAuth2'  => 0,
+        'Module::Find'         => 0,
     },
     META_MERGE          => {
         resources => {
