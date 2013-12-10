@@ -17,7 +17,8 @@ WriteMakefile(
         'LWP::Authen::OAuth2'  => 0,
         'Module::Find'         => 0,
     },
-    META_MERGE          => {
+    INSTALLDIRS           => 'site',
+      META_MERGE          => {
         resources => {
             license    => 'http://dev.perl.org/licenses/',
             repository => 'http://github.com/scottylogan/perl-www-box-api/',
