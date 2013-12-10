@@ -1,4 +1,3 @@
-foo
 lib/WWW/Box/API.pm
 lib/WWW/Box/API/Collection.pm
 lib/WWW/Box/API/Collections/Folders.pm
