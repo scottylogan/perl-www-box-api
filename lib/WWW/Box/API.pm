@@ -15,7 +15,7 @@ use JSON;
 use WWW::Box::API::OAuth2;
 use Module::Find;
 
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 useall WWW::Box::API::Collections;
 

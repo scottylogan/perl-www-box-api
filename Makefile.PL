@@ -7,6 +7,8 @@ WriteMakefile(
     AUTHOR              => 'Scotty Logan <swl@stanford.edu>',
     VERSION_FROM        => 'lib/WWW/Box/API.pm',
     ABSTRACT_FROM       => 'lib/WWW/Box/API.pm',
+    NO_META             => 1,
+    NO_MYMETA           => 1,
     LICENSE             => 'perl',
     PL_FILES            => {},
     PREREQ_PM => {
