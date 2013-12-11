@@ -1,6 +1,7 @@
 Source: libwww-box-api-perl
 Priority: extra
-Maintainer: unknown <admin@ec2-54-212-229-126.us-west-2.compute.amazonaws.com>
+Maintainer: Scotty Logan <swl@stanford.edu>
+Uploaders: Jon Robertson <jonrober@stanford.edu>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.3
 Section: perl
