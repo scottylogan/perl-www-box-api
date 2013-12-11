@@ -1,0 +1,16 @@
+Source: libwww-box-api-perl
+Priority: extra
+Maintainer: unknown <admin@ec2-54-212-229-126.us-west-2.compute.amazonaws.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Section: perl
+Homepage: https://github.com/scottylogan/perl-www-box-api
+#Vcs-Git: git://github.com/scottylogan/perl-www-box-api.git
+#Vcs-Browser: https://github.com/scottylogan/perl-www-box-api
+
+Package: libwww-box-api-perl
+Section: perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: Perl Library for Box.com API
+ Perl Library for Box.com API, using OAuth 2.0
