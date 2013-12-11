@@ -18,12 +18,6 @@ WriteMakefile(
         'Module::Find'         => 0,
     },
     INSTALLDIRS           => 'site',
-      META_MERGE          => {
-        resources => {
-            license    => 'http://dev.perl.org/licenses/',
-            repository => 'http://github.com/scottylogan/perl-www-box-api/',
-        }
-    },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'WWW-Box-API-*' },
 );
