@@ -1,0 +1,26 @@
+--- #YAML:1.0
+name:               WWW-Box-API
+version:            0.1.0
+abstract:           Box API v2 implementation
+author:
+    - Scotty Logan <swl@stanford.edu>
+license:            perl
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:
+    JSON:                 0
+    LWP:                  0
+    LWP::Authen::OAuth2:  0
+    Module::Find:         0
+    URI::QueryParam:      0
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.57_05
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
