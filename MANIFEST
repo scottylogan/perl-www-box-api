@@ -1,8 +1,10 @@
 lib/WWW/Box/API.pm
 lib/WWW/Box/API/Collection.pm
+lib/WWW/Box/API/Collections/Collaborations.pm
 lib/WWW/Box/API/Collections/Folders.pm
 lib/WWW/Box/API/Collections/GroupMemberships.pm
 lib/WWW/Box/API/Collections/Groups.pm
+lib/WWW/Box/API/Collections/UserAliases.pm
 lib/WWW/Box/API/Collections/Users.pm
 lib/WWW/Box/API/OAuth2.pm
 lib/WWW/Box/API/OAuth2/WebServer.pm
